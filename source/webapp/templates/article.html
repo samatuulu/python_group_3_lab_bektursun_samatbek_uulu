@@ -11,4 +11,9 @@
     <h1>{{ article.title }}</h1>
     <p>Created by <b>{{ article.author }}</b> at <b>{{ article.created_at }}</b></p>
     <div class="pre">{{ article.text }}</div>
+    <h4>Comments:</h4>
+    {% for comment in article.comments.all %}
+        <p class="comment">Author: {{ comment.author }} <br/>{{ comment}}</p>
+    {% endfor %}
+    <a  href="{% url "comment_add" article.pk%}" class="btn btn-secondary">Leave a comment...</a>
 {% endblock %}

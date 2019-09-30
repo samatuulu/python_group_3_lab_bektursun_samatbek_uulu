@@ -1,46 +1,46 @@
 [
 {
   "model": "webapp.article",
-  "pk": 2,
+  "pk": 25,
   "fields": {
-    "title": "Article",
-    "text": "Article 1",
-    "author": "Me",
-    "created_at": "2019-09-03T14:17:12.139Z",
-    "updated_at": "2019-09-03T14:22:09.383Z"
+    "title": "Volunteering opportunities in Kyrgyzstan with Tenti",
+    "text": "Due to nature of our work we meet a lot of guesthouse, homestay, and yurt camp owners throughout the country. Some of these people been in business for over 10 years, but still struggle to get enough guests to make ends meet, despite having comfortable and welcoming homes.  Many of the owners lack technical and language skills to create an online presence, as the leading cause of this problem. Therefore our project aims to help the guesthouses, yurt camps, and hostels, get their information out to their potential clients, through the Tenti website and by developing their own social media presences. We hope that through this project, guesthouse owners will be able to expand their knowledge and improve their businesses.\r\nWe have requests for volunteers from homestay/yurt camp owners from all over Kyrgyzstan so you can choose to volunteer anywhere in the country. This project is a great way to pick up a new language and experience Kyrgyz culture.",
+    "author": "Andew Koss",
+    "created_at": "2019-09-30T09:01:05.606Z",
+    "updated_at": "2019-09-30T09:01:05.606Z"
   }
 },
 {
   "model": "webapp.article",
-  "pk": 3,
+  "pk": 26,
   "fields": {
-    "title": "Another One",
-    "text": "Another Article",
-    "author": "Me",
-    "created_at": "2019-09-03T14:06:09.002Z",
-    "updated_at": "2019-09-03T14:06:09.002Z"
+    "title": "Things to do during winter in Kyrgyzstan",
+    "text": "Ice Skating\r\n\r\nDespite it's growing popularity among city dwellers Bishkek doesn't offer many options for ice skating enthusiasts. There are 4 ice skating rinks within city limits, all indoor. Best one being the city ice skating rink \"Gorodskoy katok\" (\"\u0413\u043e\u0440\u043e\u0434\u0441\u043a\u043e\u0439 \u043a\u0430\u0442\u043e\u043a\") with the biggest surface area (60X30 meters), indoor cafe, instructor assistance and ice skate rental. Those who prefer open outdoor ice skating will have to travel out of Bishkek to one of the outdoor rinks. Closest one is at cafe \"Uncle Tom's Cabin\" (\"\u0425\u0438\u0436\u0438\u043d\u0430 \u0414\u044f\u0434\u0438 \u0422\u043e\u043c\u0430\") by Manas International Airport. Cafe's patio overlooking the ice skating area (120X40 meters) is perfect for a family day trip with occasional refuge from the cold inside the cafe with hot meals and drinks.",
+    "author": "Kelly Mark",
+    "created_at": "2019-09-30T09:02:01.720Z",
+    "updated_at": "2019-09-30T09:03:35.707Z"
   }
 },
 {
-  "model": "webapp.article",
-  "pk": 4,
+  "model": "webapp.comment",
+  "pk": 63,
   "fields": {
-    "title": "Article 3",
-    "text": "Article 3",
-    "author": "He",
-    "created_at": "2019-09-03T14:09:48.915Z",
-    "updated_at": "2019-09-03T14:09:48.915Z"
+    "article": 25,
+    "text": "Wooow, that's so cool. Can't wait our trip to Kyrgyzstan.",
+    "author": "Jeremy Murray",
+    "created_at": "2019-09-30T09:02:26.437Z",
+    "updated_at": "2019-09-30T09:02:26.437Z"
   }
 },
 {
-  "model": "webapp.article",
-  "pk": 5,
+  "model": "webapp.comment",
+  "pk": 64,
   "fields": {
-    "title": "Title",
-    "text": "Text",
-    "author": "Author",
-    "created_at": "2019-09-03T14:44:14.453Z",
-    "updated_at": "2019-09-03T14:44:14.453Z"
+    "article": 26,
+    "text": "I definitely go there and have fun in Kyrgyzstan during the winter season! I'll be back.",
+    "author": "Kate Chan",
+    "created_at": "2019-09-30T09:04:24.883Z",
+    "updated_at": "2019-09-30T09:04:24.883Z"
   }
 },
 {
@@ -48,7 +48,7 @@
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$150000$rETxGUggP9m6$1+XpTSlJd0TUOGy4a5vygINOKbNt4VBXluA1qSdpgYY=",
-    "last_login": "2019-09-03T14:37:21.111Z",
+    "last_login": "2019-09-30T09:00:08.185Z",
     "is_superuser": true,
     "username": "admin",
     "first_name": "",

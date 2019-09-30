@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block menu %}
+    <li><a href="{% url 'article_add' %}">Add Article</a></li>
+{% endblock %}
+
+{% block content %}
+    <h1>Comments:</h1>
+    <hr/>
+    {% for comment in comments %}
+        <div>{{ comment.text }}</div>
+{#        <div>{{ comment.author }}</div>#}
+{#        <p><a href="{% url 'article_view' article.pk %}">More...</a></p>#}
+        <p><a href="{% url 'article_view' comment.article.pk %}">Go to article</a>
+        <a href="{% url 'comment_update' comment.pk %}">Update</a>
+        <a href="{% url "comment_delete" comment.pk %}">Delete</a></p>
+        <hr/>
+    {% endfor %}
+{% endblock %}

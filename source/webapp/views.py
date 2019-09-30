@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views import View
 from django.views.generic import TemplateView
 
-from webapp.forms import ArticleForm
-from webapp.models import Article
+from webapp.forms import ArticleForm, CommentForm
+from webapp.models import Article, Comment
 
 
 class IndexView(TemplateView):
@@ -10,8 +11,7 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['articles'] =  Article.objects.all()
-        context = Article.objects.all()
+        context['articles'] = Article.objects.all()
         return context
 
 
@@ -25,11 +25,12 @@ class ArticleView(TemplateView):
         return context
 
 
-def article_create_view(request, *args, **kwargs):
-    if request.method == 'GET':
+class ArticleCreateView(View):
+    def get(self, request, *args, **kwargs):
         form = ArticleForm()
         return render(request, 'create.html', context={'form': form})
-    elif request.method == 'POST':
+
+    def post(self, request, *args, **kwargs):
         form = ArticleForm(data=request.POST)
         if form.is_valid():
             article = Article.objects.create(
@@ -39,48 +40,134 @@ def article_create_view(request, *args, **kwargs):
             )
             return redirect('article_view', pk=article.pk)
         else:
-            return render(request, 'create.html', context={'form': form})
+            return render(request, 'create.html', context={
+                'form': form
+            })
 
 
-def article_update_view(request, pk):
-    article = get_object_or_404(Article, pk=pk)
-    if request.method == 'GET':
-        return render(request, 'update.html', context={'article': article})
-    elif request.method == 'POST':
-        article.title = request.POST.get('title')
-        article.author = request.POST.get('author')
-        article.text = request.POST.get('text')
+class ArticleUpdateView(View):
+    def get(self, request, *args, **kwargs):
+        article_pk = kwargs.get('pk')
+        article = get_object_or_404(Article, pk=article_pk)
+        form = ArticleForm(data={
+            'title': article.title,
+            'text': article.text,
+            'author': article.author
+        })
+        return render(request, 'update.html', context={
+            'form': form,
+            'article': article
+        })
 
-        errors = {}
-        if not article.title:
-            errors['title'] = 'Title should not be empty!'
-        elif len(article.title) > 200:
-            errors['title'] = 'Title should be 200 symbols or less!'
+    def post(self, request, *args, **kwargs):
+        form = ArticleForm(data=request.POST)
+        article_pk = kwargs.get('pk')
+        article = get_object_or_404(Article, pk=article_pk)
+        if form.is_valid():
+            article.title = form.cleaned_data['title']
+            article.text = form.cleaned_data['text']
+            article.author = form.cleaned_data['author']
+            article.save()
 
-        if not article.author:
-            errors['author'] = 'Author should not be empty!'
-        elif len(article.author) > 40:
-            errors['author'] = 'Author should be 40 symbols or less!'
-
-        if not article.text:
-            errors['text'] = 'Text should not be empty!'
-        elif len(article.text) > 3000:
-            errors['text'] = 'Text should be 3000 symbols or less!'
-
-        if len(errors) > 0:
+            return redirect('article_view', pk=article.pk)
+        else:
             return render(request, 'update.html', context={
-                'errors': errors,
+                'form': form,
                 'article': article
             })
 
-        article.save()
-        return redirect('article_view', pk=article.pk)
 
+class ArticleDeleteView(View):
+    def get(self, request, *args, **kwargs):
+        article_pk = kwargs.get('pk')
+        article = get_object_or_404(Article, pk=article_pk)
+        return render(request, 'delete.html', context={
+            'article': article
+        })
 
-def article_delete_view(request, pk):
-    article = get_object_or_404(Article, pk=pk)
-    if request.method == 'GET':
-        return render(request, 'delete.html', context={'article': article})
-    elif request.method == 'POST':
+    def post(self, request, *args, **kwargs):
+        article_pk = kwargs.get('pk')
+        article = get_object_or_404(Article, pk=article_pk)
         article.delete()
         return redirect('index')
+
+
+class CommentIndexView(TemplateView):
+    template_name = 'comment/comment_index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = Comment.objects.order_by('-created_at')
+        return context
+
+
+class CommentCreateView(View):
+    def get(self, request, *args, **kwargs):
+        article_pk = kwargs.get('pk')
+        article = get_object_or_404(Article, pk=article_pk)
+        form = CommentForm(initial={
+            'article': article.title,
+            'author': 'Anonym'
+        })
+        return render(request, 'comment/create.html', context={'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(data=request.POST)
+        if form.is_valid():
+            comment = Comment.objects.create(
+                author=form.cleaned_data['author'],
+                text=form.cleaned_data['text'],
+                article=form.cleaned_data['article']
+            )
+            return redirect('article_view', pk=comment.article.pk)
+        else:
+            return render(request, 'comment/create.html', context={
+                'form': form
+            })
+
+
+class CommentUpdateView(View):
+    def get(self, request, *args, **kwargs):
+        comment_pk = kwargs.get('pk')
+        comment = get_object_or_404(Comment, pk=comment_pk)
+        form = CommentForm(data={
+            'article': comment.article,
+            'text': comment.text,
+            'author': comment.author
+        })
+        return render(request, 'comment/update.html', context={
+            'form': form,
+            'comment': comment
+        })
+
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(data=request.POST)
+        comment_pk = kwargs.get('pk')
+        comment = get_object_or_404(Comment, pk=comment_pk)
+        if form.is_valid():
+            comment.article = form.cleaned_data['article']
+            comment.text = form.cleaned_data['text']
+            comment.author = form.cleaned_data['author']
+            comment.save()
+
+            return redirect('comment')
+        else:
+            return render(request, 'comment/update.html', context={
+                'form': form,
+                'comment': comment
+            })
+
+
+class CommentDeleteView(View):
+    def get(self, request, *args, **kwargs):
+        comment_pk = kwargs.get('pk')
+        comment = get_object_or_404(Comment, pk=comment_pk)
+        return render(request, 'comment/delete.html', context={
+            'comment': comment
+        })
+
+    def post(self, request, *args, **kwargs):
+        comment_pk = kwargs.get('pk')
+        comment = get_object_or_404(Comment, pk=comment_pk)
+        comment.delete()
+        return redirect('comment')

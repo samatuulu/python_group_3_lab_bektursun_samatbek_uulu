@@ -70,3 +70,10 @@ h1 {
    border: solid 1px red;
    box-shadow: red 0 0 3px;
 }
+.comment{
+    border-radius: 25px;
+    border-style: groove;
+    padding: 20px;
+    width: 50%;
+    height: 150px;
+}
